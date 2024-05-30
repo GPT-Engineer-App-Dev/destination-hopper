@@ -1,6 +1,7 @@
 import { Box, Container, VStack, Text, Input, Button, HStack, Flex, Spacer, Image, Link, Select } from "@chakra-ui/react";
 import { useState } from "react";
 import { FaFacebook, FaTwitter, FaInstagram } from "react-icons/fa";
+import { useNavigate } from "react-router-dom";
 
 const Index = () => {
   const [departureCity, setDepartureCity] = useState("");
@@ -9,6 +10,7 @@ const Index = () => {
   const [returnDate, setReturnDate] = useState("");
   const [passengers, setPassengers] = useState(1);
   const [searchResults, setSearchResults] = useState([]);
+  const navigate = useNavigate();
 
   const handleSearch = () => {
     // Mock search results
@@ -29,6 +31,22 @@ const Index = () => {
       },
     ];
     setSearchResults(results);
+  };
+
+  const handleBook = (flight) => {
+    const passengerInfo = {
+      name: "John Doe",
+      email: "john.doe@example.com",
+    };
+    const bookingReference = "ABC123";
+
+    navigate("/booking-confirmation", {
+      state: {
+        flightDetails: flight,
+        passengerInfo,
+        bookingReference,
+      },
+    });
   };
 
   return (
@@ -83,6 +101,7 @@ const Index = () => {
                   <Text>Arrival: {result.arrival}</Text>
                   <Text>Duration: {result.duration}</Text>
                   <Text>Price: {result.price}</Text>
+                  <Button colorScheme="blue" size="lg" onClick={() => handleBook(result)}>Book</Button>
                 </Box>
               ))}
             </VStack>
